@@ -5,6 +5,17 @@ import { generateCodeVerification } from '../extras/confirmNumber';
 
 const nodemailer = require("nodemailer");
 
+let jConfig = {
+    "host":"smtp.gmail.com", 
+   "port":"587", 
+   "secure":false, 
+    "auth":{ 
+            "type":"login", 
+            "user":"d07664662@gmail.com", 
+            "pass":"wysejayhmwvlzkpw" 
+    }
+};  
+
 export const createUser = async (req, res) => {
     if (req.body == null) {
         res.status(400).json({ msg: 'Bad Request. Please fill all fields' });
@@ -40,30 +51,35 @@ export const createAdmin = async (req, res) => {
                 .input("address", sql.VarChar, req.body.address)
                 .query(userQueries.createNewAdmin);
             if (result.rowsAffected == 1) {
-                const transporter = nodemailer.createTransport({
-                    host: 'smtp.ethereal.email',
-                    port: 587,
-                    secure: false,
-                    auth: {
-                        user: 'scarlett53@ethereal.email',
-                        pass: 'aHuesWCMRPMqeN9zBQ'
-                    }
+
+                let email ={ 
+                    from:"IncUValab",  //remitente
+                    to:req.body.email,  //destinatario
+                    subject:"Bienvenido a IncUValab",  //asunto del correo
+                    html:` 
+                        <div> 
+                        <p>Tus credenciales son: </p> ${generatePassword}
+                        <p>Recuerda que por seguridad debes de cambiar tu contraseña.</p> 
+                        </div> 
+                    ` 
+                };
+
+                let createTransport = nodemailer.createTransport(jConfig);
+
+                createTransport.sendMail(email, function (error, info) { 
+                    if(error){ 
+                         console.log("Error al enviar email"); 
+                        return res.status(500).send(error.message);
+
+                    } else{ 
+                        console.log("Correo enviado correctamente"); 
+                        res.json(result.rowsAffected);
+
+                    } 
+                    createTransport.close(); 
                 });
-
-                var mailOptions = {
-                    from: "Incuva Lab",
-                    to: req.body.email,
-                    subject: "Enviado desde node malle",
-                    text: "<h1> Tu contraseña inicial: </h1>" + generatePassword
-                }
-
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        res.status(500).send(error.message);
-                    }
-                })
+                
             }
-            res.json(result.rowsAffected);
         }
     } catch (err) {
         res.status(500);
@@ -194,34 +210,35 @@ export const getEmailVerification = async (req, res) => {
 
 export const restoreForgetPassword = async (req, res) => {
     try {
-        var codeVerfication = generateCodeVerification(7);
-
-        let transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            secure: false,
-            auth: {
-                user: 'scarlett53@ethereal.email',
-                pass: 'aHuesWCMRPMqeN9zBQ'
-            }
-        });
-
-        let mailOptions = {
-            from: "Incuva Lab",
-            to: req.body.email,
-            subject: "Enviado desde node malle",
-            text: "<h1>Tu código de verificación es: </h1>" + codeVerfication
-        }
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                res.status(500).send(error.message);
-            }
-        })
-
+        console.log("restore")
+        var codeVerfication = generateCodeVerification(7)
         const code = { codeV: codeVerfication }
 
-        res.json(code);
+        let email ={ 
+            from:"IncUValab",  //remitente
+            to:req.body.email,  //destinatario
+            subject:"Restauración de contraseña",  //asunto del correo
+            html:` 
+                <div> 
+                <p>Tu código de verificación de email es: </p> ${codeVerfication}
+                </div> 
+            ` 
+        };
+
+        let createTransport = nodemailer.createTransport(jConfig);
+
+        createTransport.sendMail(email, function (error, info) { 
+            if(error){ 
+                console.log("Error al enviar email"); 
+                return res.status(500).send(error.message);
+
+            } else{ 
+                console.log("Correo enviado correctamente"); 
+                res.json(code);
+
+            } 
+            createTransport.close(); 
+        });
         
     } catch (error) {
         res.status(500);

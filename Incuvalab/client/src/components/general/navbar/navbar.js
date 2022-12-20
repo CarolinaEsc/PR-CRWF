@@ -9,12 +9,15 @@ import { SidebarData } from "./sidebarData";
 import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import { IconContext } from 'react-icons';
+import ButtonLogoutAdmin from "../logoutAdmins";
 
 export default function NavbarHead(props) {
     const dataUser = JSON.parse(sessionStorage.getItem('user'));
     const [sidebar, setSidebar] = useState(false);
 
     const showSidebar = () => setSidebar(!sidebar);
+  
+    
     return (
         <div>
             <Navbar bg="light" expand="lg">
@@ -116,11 +119,11 @@ export default function NavbarHead(props) {
                                 <img src={avatar} clasNames="profile-image img-circle mx-2" height="40" width="40" alt="Foto de perfil" />
                                 <b className="caret"> {dataUser[0].UserName}</b>
                             </div>
-                            <div className="dropdown-menu dropdown-left" aria-labelledby="dropdownMenuButton">
+                            {/*<div className="dropdown-menu dropdown-left" aria-labelledby="dropdownMenuButton">
                                 <a className="dropdown-item" href="/userProfile">Mis registros</a>
                                 <a className="dropdown-item" href="/settings">Mi Perfil</a>
                                 <ButonLogout />
-                            </div>
+                            </div>*/}
                         </div>
                         {SidebarData.map((item, index) => {
                             return (
@@ -132,7 +135,7 @@ export default function NavbarHead(props) {
                                 </li>
                             );
                         })}
-
+                        <ButtonLogoutAdmin/>
                     </ul>
                 </nav> : <div></div>}
         </div>

@@ -37,13 +37,25 @@ export const SidebarData = [
   {
     title: 'Administración de usuarios',
     path: '/controlPageUser',
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <IoIcons.IoIosAddCircleOutline />,
     cName: 'nav-text'
   },
   {
     title: 'Agregar administrador',
     path: '/createAdmin',
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <IoIcons.IoIosAddCircleOutline/>,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Mis registros',
+    path: '/userProfile',
+    icon: <IoIcons.IoIosAperture/>,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Mis perfil',
+    path: '/settings',
+    icon: <IoIcons.IoMdPerson />,
     cName: 'nav-text'
   },
 ];

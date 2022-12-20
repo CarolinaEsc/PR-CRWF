@@ -30,6 +30,7 @@ import { AddAdminForm } from './pages/User/formCreateAdmin';
 import { UserProfile } from './pages/User/userProfile';
 import { CodeVerication } from './pages/User/numberConfirmation';
 import { PrivateRoute, PrivateRouteAdmin } from './components/general/privateRoute';
+import ButtonLogout from './components/general/logout';
 
 function App() {
   return (
@@ -46,6 +47,8 @@ function App() {
         <Route path="/changePassword" element={<UserProvider><FormChangePassword/></UserProvider>} />
         <Route path='/funding/:id' element={<FundingProvider> <FundingPage /> </FundingProvider>} />
         <Route path="/questions" element={<Questions/>} />
+
+        <Route path="/logout" element={<ButtonLogout/>} />
        
         <Route path='/catalogue' element={<FundingProvider> <Catalogue /> </FundingProvider>} />
         <Route path="/catalogue/category" element={<FundingProvider> <CatalogueCategory/> </FundingProvider>} />

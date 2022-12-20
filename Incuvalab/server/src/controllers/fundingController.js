@@ -4,6 +4,15 @@ import { getConnection, sql } from '../database/configuration/connection';
 import { uploadImageProyect } from '../libs/cloudinary';
 import fs from 'fs-extra';
 
+const extrarVideoFunding = (stringVideo)=>{
+    let videoEmbed = ""
+    let defaultSintaxt = "https://www.youtube.com/embed/"
+   
+    var index = stringVideo.substring(32)
+    videoEmbed = defaultSintaxt + index
+    return videoEmbed
+}
+
 export const setRanckFunding = async (req, res) => {
     try {
         const pool = await getConnection();
@@ -41,7 +50,7 @@ export const createFunding = async (req, res) => {
             .input("fundingImage1", sql.VarChar, resultCloudinaryf1.secure_url)
             .input("fundingImage2", sql.VarChar, resultCloudinaryf2.secure_url)
             .input("fundingImage3", sql.VarChar, resultCloudinaryf3.secure_url)
-            .input("fundingVideo", sql.VarChar, req.body.fundingVideo)
+            .input("fundingVideo", sql.VarChar, extrarVideoFunding(req.body.fundingVideo))
             .input("accountNumber", sql.VarChar, req.body.accountNumber)
             .input("socialMedia", sql.VarChar, req.body.socialMedia)
             .input("idCategory", sql.TinyInt, req.body.idCategory)
@@ -195,7 +204,7 @@ export const updateFunding = async (req, res) => {
             .input('FundingImage1', sql.VarChar,valueFunding1)
             .input('FundingImage2',sql.VarChar, valueFunding2)
             .input('FundingImage3',sql.VarChar, valueFunding3)
-            .input('FundingVideo',sql.VarChar, req.body.fundingVideo)
+            .input('FundingVideo',sql.VarChar, extrarVideoFunding(req.body.fundingVideo))
             .input('AccountNumber', sql.VarChar,req.body.accountNumber)
             .input('SocialMedia',sql.VarChar,req.body.socialMedia)
             .input('IdCategory',sql.TinyInt, req.body.idCategory)
